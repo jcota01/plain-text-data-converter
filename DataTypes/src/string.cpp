@@ -4,17 +4,21 @@
 
 #include "data_types.h"
 
-String::String() {
+String::String(std::string nodeName) : DataNode(std::move(nodeName)) {
     value = nullptr;
 }
 
-String::String(const std::string &val) {
+String::String(const std::string &val, std::string nodeName) : DataNode(std::move(nodeName)) {
     value = std::make_unique<std::string>(val);
 }
 
-std::string String::toString() const{
-    return (value) ? *value : "";
+std::string String::toString(){
+    std::string str = nameToString();
+    str += (value) ? *value : "";
+
+    return str;
 }
+
 void String::set(const std::string& val){
     value = std::make_unique<std::string>(val);
 }

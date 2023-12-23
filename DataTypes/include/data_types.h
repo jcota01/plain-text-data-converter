@@ -9,18 +9,34 @@
 #include <memory>
 #include <vector>
 
+/**
+ * Generic abstract data node which is inherited by each data type
+ */
 class DataNode{
 public:
-    [[nodiscard]] virtual std::string toString() const = 0;
+    explicit DataNode(std::string nodeName="");
+
+    [[nodiscard]] virtual std::string toString() = 0;
+
+    void setName(std::string n);
+
+protected:
+    std::string nameToString();
+
+private:
+    std::string name;
 };
 
 
+/**
+ * Class representing a string object in the data.
+ */
 class String : public DataNode{
 public:
-    explicit String(const std::string& val);
-    String();
+    explicit String(const std::string& val, std::string nodeName="");
+    String(std::string nodeName="");
 
-    [[nodiscard]] std::string toString() const override;
+    [[nodiscard]] std::string toString() override;
 
     void set(const std::string& val);
 
@@ -31,9 +47,9 @@ private:
 
 class Number : public DataNode{
 public:
-    explicit Number(int num);
+    explicit Number(int num, std::string nodeName="");
 
-    [[nodiscard]] std::string toString() const override;
+    [[nodiscard]] std::string toString() override;
 
 private:
     int value;
@@ -42,27 +58,29 @@ private:
 
 class Object : public DataNode{
 public:
-    explicit Object(DataNode* obj);
-    Object();
+    explicit Object(DataNode* obj, std::string nodeName="");
+    explicit Object(std::string nodeName="");
 
-    void setChild(DataNode* obj);
+    void addChild(DataNode* obj);
 
-    [[nodiscard]] std::string toString() const override;
+    [[nodiscard]] std::string toString() override;
 
 private:
-    DataNode* value;
+    std::vector<DataNode*> values;
 };
 
 
 class List : public DataNode{
 public:
+    List(std::string nodeName="");
+
     void addChild(DataNode* node);
 
     size_t size();
 
     DataNode& operator[](int index);
 
-    [[nodiscard]]std::string toString() const override;
+    [[nodiscard]]std::string toString() override;
 
 private:
     std::vector<DataNode*> values;

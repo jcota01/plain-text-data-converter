@@ -4,6 +4,9 @@
 
 #include "data_types.h"
 #include <stdexcept>
+#include <utility>
+
+List::List(std::string nodeName) : DataNode(std::move(nodeName)){}
 
 void List::addChild(DataNode *node) {
     values.push_back(node);
@@ -20,11 +23,15 @@ DataNode& List::operator[](int index){
     return *values[index];
 }
 
-[[nodiscard]]std::string List::toString() const{
-    std::string str;
+[[nodiscard]]std::string List::toString(){
+    std::string str = nameToString();
+    str += "\n\t[\n";
     for (auto & elem: values){
+        str += "\t\t";
         str += elem->toString();
-        str += "; ";
+        str += '\n';
     }
+    str += "\t]";
+
     return str;
 }

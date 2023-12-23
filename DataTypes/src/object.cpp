@@ -2,20 +2,27 @@
 // Created by 01jac on 23/12/2023.
 //
 
+#include <utility>
+
 #include "data_types.h"
 
-Object::Object(DataNode *obj) {
-    value = obj;
+Object::Object(DataNode* obj, std::string nodeName) : DataNode(std::move(nodeName)){
+    values.push_back(obj);
 }
 
-Object::Object() {
-    value = nullptr;
+Object::Object(std::string nodeName) : DataNode(std::move(nodeName)){}
+
+void Object::addChild(DataNode* obj){
+    values.push_back(obj);
 }
 
-void Object::setChild(DataNode* obj){
-    value = obj;
-}
+[[nodiscard]] std::string Object::toString() {
+    std::string str = nameToString();
 
-[[nodiscard]] std::string Object::toString() const{
-    return (value) ? value->toString() : "";
+    for (auto & elem: values){
+        str += elem->toString();
+        str += " ; ";
+    }
+
+    return str;
 }

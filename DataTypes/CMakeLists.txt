@@ -6,7 +6,8 @@ file(GLOB SOURCES "src/*.cpp")
 add_library(DataTypes src/string.cpp
         src/number.cpp
         src/object.cpp
-        src/list.cpp)
+        src/list.cpp
+        src/data_types.cpp)
 
 message(${SOURCES})
 
