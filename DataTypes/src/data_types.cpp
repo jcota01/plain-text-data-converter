@@ -4,14 +4,17 @@
 
 #include "data_types.h"
 
-#include <utility>
-
-DataNode::DataNode(std::string nodeName) {
+DataNode::DataNode(std::string&& nodeName, DataType dataType) {
     setName(std::move(nodeName));
+    type = dataType;
 }
 
-void DataNode::setName(std::string n){
-    name = std::move(n);
+DataType DataNode::getType() const{
+    return type;
+}
+
+void DataNode::setName(std::string&& n){
+    name = n;
 }
 
 std::string DataNode::nameToString(){

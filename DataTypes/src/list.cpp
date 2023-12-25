@@ -4,12 +4,11 @@
 
 #include "data_types.h"
 #include <stdexcept>
-#include <utility>
 
-List::List(std::string nodeName) : DataNode(std::move(nodeName)){}
+List::List(std::string&& nodeName) : DataNode(std::move(nodeName), DataType::LIST){}
 
-std::unique_ptr<List> List::create(std::string nodeName){
-    return std::unique_ptr<List>(new List(nodeName));
+std::unique_ptr<List> List::create(std::string&& nodeName){
+    return std::unique_ptr<List>(new List(std::move(nodeName)));
 }
 
 void List::addChild(std::unique_ptr<DataNode>&& node) {

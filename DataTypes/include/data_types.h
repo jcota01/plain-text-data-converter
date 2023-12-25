@@ -8,25 +8,36 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <utility>
+
+enum class DataType{
+    STRING,
+    NUMBER,
+    OBJECT,
+    LIST
+};
 
 /**
  * Generic abstract data node which is inherited by each data type
  */
 class DataNode{
 public:
+    [[nodiscard]] DataType getType() const;
+
     [[nodiscard]] virtual std::string toString() = 0;
 
-    void setName(std::string n);
+    void setName(std::string&& n);
 
     virtual ~DataNode() = default;
 
 protected:
-    explicit DataNode(std::string nodeName);
+    explicit DataNode(std::string&& nodeName, DataType dataType);
 
     std::string nameToString();
 
 private:
     std::string name;
+    DataType type;
 };
 
 
@@ -35,15 +46,14 @@ private:
  */
 class String : public DataNode{
 public:
-    static std::unique_ptr<String> create(std::string nodeName);
+    static std::unique_ptr<String> create(std::string&& nodeName);
 
     [[nodiscard]] std::string toString() override;
 
-    void set(const std::string& val);
+    void set(std::string&& val);
 
 protected:
-    explicit String(std::string nodeName);
-
+    explicit String(std::string&& nodeName);
 
 private:
     std::unique_ptr<std::string> value;
@@ -52,12 +62,12 @@ private:
 
 class Number : public DataNode{
 public:
-    static std::unique_ptr<Number> create(std::string nodeName, int num);
+    static std::unique_ptr<Number> create(std::string&& nodeName, int num);
 
     [[nodiscard]] std::string toString() override;
 
 protected:
-    explicit Number(std::string nodeName, int num);
+    explicit Number(std::string&& nodeName, int num);
 
 private:
     int value;
@@ -66,14 +76,14 @@ private:
 
 class Object : public DataNode{
 public:
-    static std::unique_ptr<Object> create(std::string nodeName);
+    static std::unique_ptr<Object> create(std::string&& nodeName);
 
     void addChild(std::unique_ptr<DataNode>&& node);
 
     [[nodiscard]] std::string toString() override;
 
 protected:
-    explicit Object(std::string nodeName);
+    explicit Object(std::string&& nodeName);
 
 private:
     std::vector<std::unique_ptr<DataNode>> values;
@@ -82,7 +92,7 @@ private:
 
 class List : public DataNode{
 public:
-    static std::unique_ptr<List> create(std::string nodeName);
+    static std::unique_ptr<List> create(std::string&& nodeName);
 
     void addChild(std::unique_ptr<DataNode>&& node);
 
@@ -93,7 +103,7 @@ public:
     [[nodiscard]]std::string toString() override;
 
 protected:
-    explicit List(std::string nodeName);
+    explicit List(std::string&& nodeName);
 
 private:
     std::vector<std::unique_ptr<DataNode>> values;
