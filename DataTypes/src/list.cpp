@@ -8,8 +8,12 @@
 
 List::List(std::string nodeName) : DataNode(std::move(nodeName)){}
 
-void List::addChild(DataNode *node) {
-    values.push_back(node);
+std::unique_ptr<List> List::create(std::string nodeName){
+    return std::unique_ptr<List>(new List(nodeName));
+}
+
+void List::addChild(std::unique_ptr<DataNode>&& node) {
+    values.push_back(std::move(node));
 }
 
 size_t List::size() {

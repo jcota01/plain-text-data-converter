@@ -4,8 +4,12 @@
 
 #include "data_types.h"
 
-Number::Number(int num, std::string nodeName) : DataNode(std::move(nodeName)) {
+Number::Number(std::string nodeName, int num) : DataNode(std::move(nodeName)) {
     value = num;
+}
+
+std::unique_ptr<Number> Number::create(std::string nodeName, int num){
+    return std::unique_ptr<Number>(new Number(nodeName, num));
 }
 
 [[nodiscard]] std::string Number::toString() {

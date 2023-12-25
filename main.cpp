@@ -2,19 +2,22 @@
 #include "data_types.h"
 
 int main() {
-    auto* str = new String("hello", "str1");
+    auto str = String::create("str1");
+    auto obj = Object::create("obj1");
 
-    auto* obj = new Object("obj1");
-    obj->addChild(str);
+    str->set("hello");
 
-    auto* str2 = new String("goodbye", "str2");
+    obj->addChild(std::move(str));
 
-    auto* list = new List("list1");
-    list->addChild(obj);
-    list->addChild(str2);
+    auto str2 = String::create("str2");
+    str2->set("goodbye");
+
+    auto list = List::create("list1");
+    list->addChild(std::move(obj));
+    list->addChild(std::move(str2));
 
     std::cout << list->toString() << std::endl;
-
+    std::cout << list->size() << std::endl;
 
     return 0;
 }

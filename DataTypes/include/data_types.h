@@ -14,13 +14,15 @@
  */
 class DataNode{
 public:
-    explicit DataNode(std::string nodeName="");
-
     [[nodiscard]] virtual std::string toString() = 0;
 
     void setName(std::string n);
 
+    virtual ~DataNode() = default;
+
 protected:
+    explicit DataNode(std::string nodeName);
+
     std::string nameToString();
 
 private:
@@ -33,12 +35,15 @@ private:
  */
 class String : public DataNode{
 public:
-    explicit String(const std::string& val, std::string nodeName="");
-    String(std::string nodeName="");
+    static std::unique_ptr<String> create(std::string nodeName);
 
     [[nodiscard]] std::string toString() override;
 
     void set(const std::string& val);
+
+protected:
+    explicit String(std::string nodeName);
+
 
 private:
     std::unique_ptr<std::string> value;
@@ -47,9 +52,12 @@ private:
 
 class Number : public DataNode{
 public:
-    explicit Number(int num, std::string nodeName="");
+    static std::unique_ptr<Number> create(std::string nodeName, int num);
 
     [[nodiscard]] std::string toString() override;
+
+protected:
+    explicit Number(std::string nodeName, int num);
 
 private:
     int value;
@@ -58,23 +66,25 @@ private:
 
 class Object : public DataNode{
 public:
-    explicit Object(DataNode* obj, std::string nodeName="");
-    explicit Object(std::string nodeName="");
+    static std::unique_ptr<Object> create(std::string nodeName);
 
-    void addChild(DataNode* obj);
+    void addChild(std::unique_ptr<DataNode>&& node);
 
     [[nodiscard]] std::string toString() override;
 
+protected:
+    explicit Object(std::string nodeName);
+
 private:
-    std::vector<DataNode*> values;
+    std::vector<std::unique_ptr<DataNode>> values;
 };
 
 
 class List : public DataNode{
 public:
-    List(std::string nodeName="");
+    static std::unique_ptr<List> create(std::string nodeName);
 
-    void addChild(DataNode* node);
+    void addChild(std::unique_ptr<DataNode>&& node);
 
     size_t size();
 
@@ -82,8 +92,11 @@ public:
 
     [[nodiscard]]std::string toString() override;
 
+protected:
+    explicit List(std::string nodeName);
+
 private:
-    std::vector<DataNode*> values;
+    std::vector<std::unique_ptr<DataNode>> values;
 };
 
 #endif //TEXT_DATA_CONVERTER_DATA_TYPES_H

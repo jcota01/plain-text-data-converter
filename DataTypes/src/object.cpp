@@ -6,14 +6,14 @@
 
 #include "data_types.h"
 
-Object::Object(DataNode* obj, std::string nodeName) : DataNode(std::move(nodeName)){
-    values.push_back(obj);
-}
-
 Object::Object(std::string nodeName) : DataNode(std::move(nodeName)){}
 
-void Object::addChild(DataNode* obj){
-    values.push_back(obj);
+std::unique_ptr<Object> Object::create(std::string nodeName){
+    return std::unique_ptr<Object>(new Object(nodeName));
+}
+
+void Object::addChild(std::unique_ptr<DataNode>&& node){
+    values.push_back(std::move(node));
 }
 
 [[nodiscard]] std::string Object::toString() {

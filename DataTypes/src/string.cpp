@@ -2,14 +2,16 @@
 // Created by 01jac on 23/12/2023.
 //
 
+#include <utility>
+
 #include "data_types.h"
 
 String::String(std::string nodeName) : DataNode(std::move(nodeName)) {
     value = nullptr;
 }
 
-String::String(const std::string &val, std::string nodeName) : DataNode(std::move(nodeName)) {
-    value = std::make_unique<std::string>(val);
+std::unique_ptr<String> String::create(std::string nodeName){
+    return std::unique_ptr<String>(new String(std::move(nodeName)));
 }
 
 std::string String::toString(){
