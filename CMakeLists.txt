@@ -4,7 +4,9 @@ project(text_data_converter)
 set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(DataTypes)
+add_subdirectory(json-interface)
 
 add_executable(text_data_converter main.cpp)
 
 target_link_libraries(text_data_converter DataTypes)
+target_link_libraries(text_data_converter json-interface)

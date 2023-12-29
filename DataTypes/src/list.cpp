@@ -20,6 +20,7 @@ size_t List::size() {
 }
 
 DataNode& List::operator[](int index){
+    // Make sure there is an element at the index
     if (index < 0 || index >= values.size()){
         throw std::out_of_range("Index is out of range.");
     }
@@ -27,14 +28,14 @@ DataNode& List::operator[](int index){
 }
 
 [[nodiscard]]std::string List::toString(){
+    // Get "NAME : "
     std::string str = nameToString();
-    str += "\n\t[\n";
+    str += "[ ";
+    // Add each element from the list to the string
     for (auto & elem: values){
-        str += "\t\t";
-        str += elem->toString();
-        str += '\n';
+        str += elem->toString() + ", ";
     }
-    str += "\t]";
+    str += "]";
 
     return str;
 }

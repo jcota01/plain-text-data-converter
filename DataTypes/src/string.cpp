@@ -5,6 +5,7 @@
 #include "data_types.h"
 
 String::String(std::string&& nodeName) : DataNode(std::move(nodeName), DataType::STRING) {
+    // By default, the value is null, it must be set using set()
     value = nullptr;
 }
 
@@ -13,7 +14,9 @@ std::unique_ptr<String> String::create(std::string&& nodeName){
 }
 
 std::string String::toString(){
+    // Get "NAME : "
     std::string str = nameToString();
+    // If there is a value stored, then add that, otherwise (if value == nullptr) add nothing
     str += (value) ? *value : "";
 
     return str;

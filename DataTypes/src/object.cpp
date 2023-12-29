@@ -15,12 +15,17 @@ void Object::addChild(std::unique_ptr<DataNode>&& node){
 }
 
 [[nodiscard]] std::string Object::toString() {
+    // Gets "NAME : "
     std::string str = nameToString();
+    str += "{ ";
 
+    // Adds each child node to the string
     for (auto & elem: values){
         str += elem->toString();
-        str += " ; ";
+        str += " , ";
     }
+
+    str += " }";
 
     return str;
 }

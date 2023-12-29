@@ -13,6 +13,7 @@ std::unique_ptr<Number> Number::create(std::string&& nodeName, int num){
 }
 
 [[nodiscard]] std::string Number::toString() {
+    // Gets "NAME : "
     std::string str = nameToString();
     str += std::to_string(value);
 

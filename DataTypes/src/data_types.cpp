@@ -9,7 +9,7 @@ DataNode::DataNode(std::string&& nodeName, DataType dataType) {
     type = dataType;
 }
 
-DataType DataNode::getType() const{
+DataType DataNode::getType() const noexcept{
     return type;
 }
 
@@ -19,8 +19,12 @@ void DataNode::setName(std::string&& n){
 
 std::string DataNode::nameToString(){
     std::string nameStr;
-    nameStr += name;
-    nameStr += " : ";
+
+    // If name is not ""
+    if(!name.empty()) {
+        nameStr += name;
+        nameStr += " : ";
+    }
 
     return nameStr;
 }
